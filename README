@@ -1,0 +1,81 @@
+GStreamer Neural Network Inference demo for NXP i.MX Processors
+===============================================================
+
+
+ABOUT THIS SOFTWARE
+-------------------
+This software demonstarates GStreamer Neural Network Inference for NXP i.MX processors.
+It uses an object detection model and a pose estimation model published in the internet.
+Binary distribution includes demo scripts, gstreamer plugin, TensorFlow Lite models and documents.
+
+Demo scripts:
+  /usr/bin/gstnninferencedemo-mobilenet-ssd-camera
+  /usr/bin/gstnninferencedemo-mobilenet-ssd-video
+  /usr/bin/gstnninferencedemo-posenet-camera
+  /usr/bin/gstnninferencedemo-posenet-video
+
+GStreamer plugin:
+  /usr/lib/gstreamer-1.0/libgstnninferencedemo.so
+
+TensorFlow Lite models and documents
+  /usr/share/gstnninferencedemo/*
+
+
+PLATFORM
+--------
+This software is tested with below environment:
+1) BSP
+  - i.MX Linux BSP 5.4.47-2.2.0
+2) Boards
+  - i.MX 8M Plus EVK
+  - i.MX 8M Mini EVK
+
+
+USAGE
+-----
+1) Install this package to imx-image-full rootfs, because it depends on OpenCV shared libs.
+2) Boot the i.MX EVK board and login to Linux as root
+3) Run below demo scripts
+   - Object detection with video stream (720p30 video is recommended.)
+     # gstnninferencedemo-mobilenet-ssd-video </path/to/video_file>
+   - Object detection with camera stream
+     # gstnninferencedemo-mobilenet-ssd-video [/dev/video?]
+   - Pose estimation with video stream (720p30 video is recommended.)
+     # gstnninferencedemo-posenet-video </path/to/video_file>
+   - Pose estimation with camera stream
+     # gstnninferencedemo-posenet-video [/dev/video?]
+4) If you want to play more, modify demo scripts freely!
+
+
+BUILD
+-----
+The commands to build this software in x86_64 linux host PC are below:
+  $ tar xf gstnninferencedemo-x.y.z.tar.gz
+  $ cd gstnninferencedemo-x.y.z
+  $ source /opt/fsl-imx-xwayland/5.4-zeus/environment-setup-aarch64-poky-linux
+  $ ./autogen.sh
+  $ ./configure --host=aarch64-poky-linux
+  $ make
+
+
+ACKNOWLEDGEMENTS
+----------------
+I'm deeply grateful to teams/communities developing great software below:
+
+This software was written with reference to:
+  - imx-gst1.0-plugin <https://source.codeaurora.org/external/imx/imx-gst1.0-plugin>
+
+This software includes the works that are distributed in the Apache License 2.0.
+  - google-coral/examples-camera <https://github.com/google-coral/examples-camera>
+  - google-coral/project-posenet <https://github.com/google-coral/project-posenet>
+  - google-coral/edgetpu <https://github.com/google-coral/edgetpu>
+
+
+DISCLAIMER
+----------
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO
+THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT
+SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR
+ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE
+USE OR PERFORMANCE OF THIS SOFTWARE.

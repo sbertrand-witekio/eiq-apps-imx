@@ -1,0 +1,67 @@
+#!/bin/sh
+# -*- mode: sh -*-
+#
+# SPDX-License-Identifier: LGPL-2.0+
+# Copyright 2021 NXP
+#
+# usage:
+# gstnninferencedemo-posenet-video <path/to/video_file>
+
+# video file
+if [ $# = 1 ]; then
+  VIDEO_FILE=$1
+else
+  echo "Usage:"
+  echo "# $0 <path/to/video_file>"
+  exit 1
+fi
+
+# demo mode
+DEMO_MODE=posenet
+
+# NN model
+MODEL=/usr/share/gstnninferencedemo/google-coral/project-posenet/posenet_mobilenet_v1_075_353_481_quant_decoder.tflite
+LABEL=no-label
+
+# display stats
+DISPLAY_STATS=true
+
+# enable inference (or skip inference)
+ENABLE_INFERENCE=true
+
+# use NNAPI (or use CPUs)
+USE_NNAPI=false
+if [ -f /proc/device-tree/model ]; then
+  cat /proc/device-tree/model | grep -e "i.MX8MPlus" > /dev/null
+  if [ $? = 0 ]; then
+    USE_NNAPI=true
+  fi
+fi
+
+# if using CPUs, set num of CPUs
+NUM_THREADS=4
+#NUM_THREADS=3
+#NUM_THREADS=2
+#NUM_THREADS=1
+
+# rotation
+#ROT=horizontal-flip
+ROT=none
+
+# video sync
+#SYNC=false
+SYNC=true
+
+# windows size
+WIN_WIDTH=1280
+WIN_HEIGHT=720
+
+# debug
+export VSI_NN_LOG_LEVEL=0
+
+# gstreamer pipeline
+GST_COMMAND="gst-launch-1.0 -v filesrc location=${VIDEO_FILE} ! decodebin ! queue max-size-time=0 ! nninferencedemo rotation=${ROT} demo-mode=${DEMO_MODE} model=${MODEL} label=${LABEL} use-nnapi=${USE_NNAPI} num-threads=${NUM_THREADS} display-stats=${DISPLAY_STATS} enable-inference=${ENABLE_INFERENCE} ! waylandsink sync=${SYNC} window_width=${WIN_WIDTH} window_height=${WIN_HEIGHT}"
+
+# run
+echo ${GST_COMMAND}
+${GST_COMMAND}
