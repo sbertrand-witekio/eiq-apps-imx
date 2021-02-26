@@ -1,0 +1,3 @@
+[submodule "google-coral"]
+	path = google-coral
+	url = ssh://git@bitbucket.sw.nxp.com/~nxa15450/google-coral.git
