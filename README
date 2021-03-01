@@ -20,7 +20,6 @@ GStreamer plugin:
 TensorFlow Lite models and documents
   /usr/share/gstnninferencedemo/*
 
-
 PLATFORM
 --------
 This software is tested with below environment:
@@ -31,12 +30,53 @@ This software is tested with below environment:
   - i.MX 8M Plus EVK
   - i.MX 8M Mini EVK
 
+BUILD
+-----
+The commands to build this software in x86_64 linux host PC are below:
+  $ git clone {this-git}
+  $ cd eiq-example-apps
+  $ git submodule init
+  $ git submodule update
+
+  $ cd google-coral/
+  $ ./download_dependencies.sh
+  $ cd edgetpu
+  /* Setup the cross-build env with i.MX sdk. For example, source /opt/fsl-imx-internal-xwayland/5.10-gatesgarth/environment-setup-cortexa53-crypto-poky-linux. */
+  $ source <script with environment variables>
+  $ ./autogen.sh
+  $ ./configure --host=aarch64-poky-linux
+  $ make
+  /* If build successfully, libgooglecoraledgetpuposenet.a will be generated under google-coral/edgetpu/.libs/. */
+
+  $ cd eiq-example-apps
+  /* Setup the cross-build env with i.MX sdk. For example, source /opt/fsl-imx-internal-xwayland/5.10-gatesgarth/environment-setup-cortexa53-crypto-poky-linux. */
+  $ source <script with environment variables>
+  $ ./autogen.sh
+  $ ./configure --host=aarch64-poky-linux CPPFLAGS="-I$(pwd)/google-coral/edgetpu" LDFLAGS="$(pwd)/google-coral/edgetpu/.libs/libgooglecoraledgetpuposenet.a"
+  $ make
+  /* If build successfully, libgstnninferencedemo.so will be generated under eiq-example-apps/src/.libs/. */
+
+INSTALL
+-----
+1) Install this package to imx-image-full rootfs, because it depends on OpenCV shared libs.
+2) Copy demo scripts gstnninferencedemo-mobilenet-ssd-camera, gstnninferencedemo-mobilenet-ssd-video, gstnninferencedemo-posenet-camera and gstnninferencedemo-posenet-video to /usr/bin in root filesystem.
+   # cp eiq-example-apps/src/gstnninferencedemo-mobilenet-ssd-camera {rootfs}/usr/bin/
+   # cp eiq-example-apps/src/gstnninferencedemo-mobilenet-ssd-video {rootfs}/usr/bin/
+   # cp eiq-example-apps/src/gstnninferencedemo-posenet-camera {rootfs}/usr/bin/
+   # cp eiq-example-apps/src/gstnninferencedemo-posenet-video {rootfs}/usr/bin/
+3) Copy the generated gstreamer plugin library libgstnninferencedemo.so to /usr/lib/gstreamer-1.0 in root filesystem.
+   # cp libgstnninferencedemo.so {rootfs}/usr/lib/gstreamer-1.0/
+4) Copy TFLite models to /usr/share/gstnninferencedemo/google-coral in root filesystem.
+   # mkdir -p {rootfs}/usr/share/gstnninferencedemo/google-coral/examples-camera
+   # mkdir -p {rootfs}/usr/share/gstnninferencedemo/google-coral/project-posenet
+   # cp google-coral/examples-camera/all_models/coco_labels.txt {rootfs}/usr/share/gstnninferencedemo/google-coral/examples-camera/
+   # cp google-coral/examples-camera/all_models/mobilenet_ssd_v2_coco_quant_postprocess.tflite {rootfs}/usr/share/gstnninferencedemo/google-coral/examples-camera/
+   # cp google-coral/project-posenet/models/posenet_mobilenet_v1_075_353_481_quant_decoder.tflite {rootfs}/usr/share/gstnninferencedemo/google-coral/project-posenet/
 
 USAGE
 -----
-1) Install this package to imx-image-full rootfs, because it depends on OpenCV shared libs.
-2) Boot the i.MX EVK board and login to Linux as root
-3) Run below demo scripts
+1) Boot the i.MX EVK board and login to Linux as root
+2) Run below demo scripts
    - Object detection with video stream (720p30 video is recommended.)
      # gstnninferencedemo-mobilenet-ssd-video </path/to/video_file>
    - Object detection with camera stream
@@ -45,19 +85,7 @@ USAGE
      # gstnninferencedemo-posenet-video </path/to/video_file>
    - Pose estimation with camera stream
      # gstnninferencedemo-posenet-video [/dev/video?]
-4) If you want to play more, modify demo scripts freely!
-
-
-BUILD
------
-The commands to build this software in x86_64 linux host PC are below:
-  $ tar xf gstnninferencedemo-x.y.z.tar.gz
-  $ cd gstnninferencedemo-x.y.z
-  $ source /opt/fsl-imx-xwayland/5.4-zeus/environment-setup-aarch64-poky-linux
-  $ ./autogen.sh
-  $ ./configure --host=aarch64-poky-linux
-  $ make
-
+3) If you want to play more, modify demo scripts freely!
 
 ACKNOWLEDGEMENTS
 ----------------
