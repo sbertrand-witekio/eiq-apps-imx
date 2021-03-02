@@ -29,6 +29,8 @@ This software is tested with below environment:
 2) Boards
   - i.MX 8M Plus EVK
   - i.MX 8M Mini EVK
+3) Camera
+  - MIPI camera
 
 BUILD
 -----
@@ -80,10 +82,12 @@ USAGE
    - Object detection with video stream (720p30 video is recommended.)
      # gstnninferencedemo-mobilenet-ssd-video </path/to/video_file>
    - Object detection with camera stream
+     (For example, MIPI camera is plugged in CSI1 MIPI port on i.MX 8M Plus EVK. /dev/video1 is used.)
      # gstnninferencedemo-mobilenet-ssd-video [/dev/video?]
    - Pose estimation with video stream (720p30 video is recommended.)
      # gstnninferencedemo-posenet-video </path/to/video_file>
    - Pose estimation with camera stream
+     (For example, MIPI camera is plugged in CSI1 MIPI port on i.MX 8M Plus EVK. /dev/video1 is used.)
      # gstnninferencedemo-posenet-video [/dev/video?]
 3) If you want to play more, modify demo scripts freely!
 
