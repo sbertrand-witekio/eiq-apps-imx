@@ -61,7 +61,7 @@ WIN_HEIGHT=720
 export VSI_NN_LOG_LEVEL=0
 
 # gstreamer pipeline
-GST_COMMAND="gst-launch-1.0 -v v4l2src device=${CAMERA} ! video/x-raw,width=${SRC_WIDTH},height=${SRC_HEIGHT} ! queue max-size-time=0 ! nninferencedemo rotation=${ROT} demo-mode=${DEMO_MODE} model=${MODEL} label=${LABEL} use-nnapi=${USE_NNAPI} num-threads=${NUM_THREADS} display-stats=${DISPLAY_STATS} enable-inference=${ENABLE_INFERENCE} ! waylandsink sync=${SYNC} window_width=${WIN_WIDTH} window_height=${WIN_HEIGHT}"
+GST_COMMAND="gst-launch-1.0 -v v4l2src device=${CAMERA} ! video/x-raw,width=${SRC_WIDTH},height=${SRC_HEIGHT} ! queue max-size-time=0 ! nninferencedemo rotation=${ROT} demo-mode=${DEMO_MODE} model=${MODEL} label=${LABEL} use-nnapi=${USE_NNAPI} num-threads=${NUM_THREADS} display-stats=${DISPLAY_STATS} enable-inference=${ENABLE_INFERENCE} ! waylandsink sync=${SYNC}"
 
 # run
 echo ${GST_COMMAND}
