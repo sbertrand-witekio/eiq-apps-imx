@@ -51,10 +51,6 @@ typedef struct _GstNnInferenceDemo {
     tflite_posenet,
     tflite_mobilenet_ssd,
     tflite_benchmark,
-#ifdef ENABLE_VNN
-    vnn_tiny_yolov3,
-    vnn_unet
-#endif
   } demo_mode;
   Imx2DRotationMode rotate;
   gchar *model;
