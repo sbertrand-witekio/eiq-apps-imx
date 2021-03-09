@@ -35,10 +35,6 @@ extern "C" {
 #include "tflite_benchmark.h"
 #include "posenet.h"
 #include "mobilenet_ssd.h"
-#ifdef ENABLE_VNN
-#include "vnn_tiny_yolov3.h"
-#include "vnn_unet.h"
-#endif
 
 #define IN_POOL_MAX_BUFFERS (30)
 
@@ -57,10 +53,6 @@ extern "C" {
 #define DEFAULT_MODEL_POSENET       SHARED_DIR "google-coral/project-posenet/posenet_mobilenet_v1_075_353_481_quant_decoder.tflite"
 #define DEFAULT_MODEL_MOBILENET_SSD SHARED_DIR "google-coral/examples-camera/mobilenet_ssd_v2_coco_quant_postprocess.tflite"
 #define DEFAULT_LABEL_MOBILENET_SSD SHARED_DIR "google-coral/examples-camera/coco_labels.txt"
-#ifdef ENABLE_VNN
-#define DEFAULT_MODEL_TINY_YOLOV3   SHARED_DIR "tiny_yolov3_u8.export.data"
-#define DEFAULT_MODEL_UNET          SHARED_DIR "unet_u8.export.data"
-#endif
 
 #define UNREF_BUFFER(buffer) {                \
   if (buffer) {                               \
@@ -146,33 +138,6 @@ nninferencedemo_init (
       demo->inference = inference;
       break;
     }
-#ifdef ENABLE_VNN
-    case GstNnInferenceDemo::vnn_tiny_yolov3: {
-      vnn_tiny_yolov3_t *inference = new vnn_tiny_yolov3_t ();
-      std::string model (DEFAULT_MODEL_TINY_YOLOV3);
-      if (demo->model) {
-        model = demo->model;
-      }
-      ret = inference->init (model, demo->use_nnapi, demo->num_threads);
-      if (ret == 0) {
-        if (demo->label) {
-          ret = inference->load_labels (demo->label);
-        }
-      }
-      demo->inference = inference;
-      break;
-    }
-    case GstNnInferenceDemo::vnn_unet: {
-      vnn_unet_t *inference = new vnn_unet_t ();
-      std::string model (DEFAULT_MODEL_UNET);
-      if (demo->model) {
-        model = demo->model;
-      }
-      ret = inference->init (model, demo->use_nnapi, demo->num_threads);
-      demo->inference = inference;
-      break;
-    }
-#endif
     default:
       GST_ERROR ("Invalid demo_mode");
       return -1;
@@ -263,10 +228,6 @@ demo_mode_get_type (void)
       {GstNnInferenceDemo::tflite_posenet,       "TensorFlow Lite Posenet",       "posenet"},
       {GstNnInferenceDemo::tflite_mobilenet_ssd, "TensorFlow Lite Mobilenet SSD", "mobilenet-ssd"},
       {GstNnInferenceDemo::tflite_benchmark,     "TensorFlow Lite Benchmark",     "benchmark"},
-#ifdef ENABLE_VNN
-      {GstNnInferenceDemo::vnn_tiny_yolov3,      "VNN Tiny Yolo V3",              "vnn-tiny-yolov3"},
-      {GstNnInferenceDemo::vnn_unet,             "VNN Unet",                      "vnn-unet"},
-#endif
       {0,                                        NULL,                            NULL },
     };
 
