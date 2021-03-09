@@ -23,11 +23,6 @@ TFLITE_CXXFLAGS = \
 
 TFLITE_LIBS = -ltensorflow-lite
 
-if ENABLE_VNN
-OVXLIB_CFLAGS = -I$(SDKTARGETSYSROOT)/usr/include/OVXLIB
-OVXLIB_LIBS = -lovxlib -lOpenVX -lOpenVXU -lCLC -lVSC -lGAL
-endif
-
 ##############################################################################
 # libgstnninferencedemo.la
 ##############################################################################
@@ -46,14 +41,6 @@ HEADERS_TF = \
   imx_2d_device.h \
   imx_2d_device_allocator.h
 
-HEADERS_VNN = \
-  vnn_inference.h \
-  vnn_global.h \
-  vnn_tinyyolov3u8.h \
-  vnn_tiny_yolov3.h \
-  vnn_unetu8.h \
-  vnn_unet.h
-
 SOURCES_TF = \
   gstnninferencedemo.cpp \
   inference.cpp \
@@ -68,20 +55,8 @@ SOURCES_TF = \
   imx_2d_device.c \
   imx_2d_device_g2d.c
 
-SOURCES_VNN = \
-  vnn_inference.cpp \
-  vnn_tinyyolov3u8.c \
-  vnn_tiny_yolov3.cpp \
-  vnn_unetu8.c \
-  vnn_unet.cpp
-
-if ENABLE_VNN
-noinst_HEADERS = $(HEADERS_TF) $(HEADERS_VNN)
-libgstnninferencedemo_la_SOURCES = $(SOURCES_TF) $(SOURCES_VNN)
-else
 noinst_HEADERS = $(HEADERS_TF)
 libgstnninferencedemo_la_SOURCES = $(SOURCES_TF)
-endif
 
 libgstnninferencedemo_la_CFLAGS = \
   -DUSE_G2D \
@@ -90,10 +65,6 @@ libgstnninferencedemo_la_CFLAGS = \
 
 if USE_ION
 libgstnninferencedemo_la_CFLAGS += -DUSE_ION
-endif
-
-if ENABLE_VNN
-libgstnninferencedemo_la_CFLAGS += -DENABLE_VNN
 endif
 
 libgstnninferencedemo_la_CXXFLAGS = \
@@ -130,12 +101,6 @@ dist_pkgdata_DATA = \
   $(top_srcdir)/README \
   $(top_srcdir)/COPYING
 
-# don't install libgstnninferencedemo.la and vnn sources
+# don't install libgstnninferencedemo.la
 install-data-hook:
 	@(cd $(DESTDIR)/$(plugindir) && $(RM) $(plugin_LTLIBRARIES))
-
-# don't distribute vnn sources if not defined ENABLE_VNN
-if !ENABLE_VNN
-dist-hook:
-	cd $(distdir) && rm -f $(HEADERS_VNN) $(SOURCES_VNN)
-endif

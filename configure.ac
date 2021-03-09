@@ -108,12 +108,6 @@ AC_SUBST(GST_PLUGINS_BASE_LIBS)
 dnl add include path for imx
 CFLAGS="$CFLAGS -I$SDKTARGETSYSROOT/usr/include/imx"
 
-dnl check vnn
-old_CFLAGS=$CFLAGS
-CFLAGS="$CFLAGS -I$SDKTARGETSYSROOT/usr/include/OVXLIB"
-CHECK_ENABLE_FEATURE(vnn, [internal option. don't enable.], [VNN], [vsi_nn_pub.h])
-CFLAGS=$old_CFLAGS
-
 dnl check ion allocator header files
 old_CFLAGS=$CFLAGS
 PKG_CHECK_MODULES(GST, gstreamer-$GST_MAJORMINOR >= 1.14, CFLAGS="$CFLAGS `$PKG_CONFIG --cflags gstreamer-allocators-1.0`", CFLAGS="$CFLAGS `$PKG_CONFIG --cflags gstreamer-bad-allocators-1.0`")
