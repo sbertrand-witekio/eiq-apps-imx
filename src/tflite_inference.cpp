@@ -106,7 +106,7 @@ int tflite_inference_t::init(
   }
 
   if (verbose_) {
-    PrintInterpreterState(interpreter_.get());
+    tflite::PrintInterpreterState(interpreter_.get());
   }
 
   // initial inference test
