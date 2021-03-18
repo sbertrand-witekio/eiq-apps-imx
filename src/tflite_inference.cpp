@@ -25,7 +25,7 @@
 #include "tflite_inference.h"
 
 // google-coral/edgetpu
-#include "src/cpp/posenet/posenet_decoder_op.h"
+#include "posenet/posenet_decoder_op.h"
 #ifdef BUILD_WITH_EDGETPU
 #include "edgetpu.h"
 #endif
