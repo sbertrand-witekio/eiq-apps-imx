@@ -27,7 +27,7 @@ This software is tested with below environment:
   - i.MX Linux BSP 5.4.47-2.2.0
   - i.MX Linux BSP 5.10.x
 2) Boards
-  - i.MX 8M Plus EVK
+  - i.MX 8M Plus EVK (CPU rev 1.1)
   - i.MX 8M Mini EVK
 3) Camera
   - MIPI camera
@@ -54,7 +54,7 @@ The commands to build this software in x86_64 linux host PC are below:
   /* Setup the cross-build env with i.MX sdk. For example, source /opt/fsl-imx-internal-xwayland/5.10-gatesgarth/environment-setup-cortexa53-crypto-poky-linux. */
   $ source <script with environment variables>
   $ ./autogen.sh
-  $ ./configure --host=aarch64-poky-linux CPPFLAGS="-I$(pwd)/google-coral/edgetpu" LDFLAGS="$(pwd)/google-coral/edgetpu/.libs/libgooglecoraledgetpuposenet.a"
+  $ ./configure --host=aarch64-poky-linux CPPFLAGS="-I$(pwd)/google-coral/edgetpu/src/cpp/" LDFLAGS="$(pwd)/google-coral/edgetpu/.libs/libgooglecoraledgetpuposenet.a"
   $ make
   /* If build successfully, libgstnninferencedemo.so will be generated under eiq-example-apps/src/.libs/. */
 
