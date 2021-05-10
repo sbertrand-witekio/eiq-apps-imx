@@ -1,0 +1,12 @@
+NXP Software Content Register
+
+--------------------------------------------
+
+Package:                     eiq-apps-imx.git
+Outgoing License:            LGPL-2.0+
+License File:                COPYING
+Package Category:            MachineLearning
+Type of Content:             source
+Description and comments:    GStreamer Neural Network Inference for NXP i.MX processors
+Release Location:            https://source.codeaurora.org/external/imx/eiq-apps-imx
+Origin:                      NXP (LGPL-2.0+)
