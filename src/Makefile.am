@@ -79,7 +79,8 @@ libgstnninferencedemo_la_LIBADD = \
   -lg2d \
   $(TFLITE_LIBS) \
   $(OPENCV_LIBS) \
-  $(OVXLIB_LIBS)
+  $(OVXLIB_LIBS) \
+  -lgooglecoraledgetpuposenet
 
 libgstnninferencedemo_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
 libgstnninferencedemo_la_LIBTOOLFLAGS = $(GST_PLUGIN_LIBTOOLFLAGS)
