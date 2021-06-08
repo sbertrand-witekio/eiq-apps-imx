@@ -100,7 +100,8 @@ dist_bin_SCRIPTS= \
 pkgdatadir = $(datadir)/$(PACKAGE_NAME)
 dist_pkgdata_DATA = \
   $(top_srcdir)/README \
-  $(top_srcdir)/COPYING
+  $(top_srcdir)/COPYING-LGPL2.0 \
+  $(top_srcdir)/COPYING-LGPL2.1
 
 # don't install libgstnninferencedemo.la
 install-data-hook:
