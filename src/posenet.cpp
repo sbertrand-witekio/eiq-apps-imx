@@ -163,7 +163,7 @@ posenet_t::~posenet_t()
 
 int posenet_t::init(
   const std::string& model,
-  bool use_nnapi,
+  int use_nnapi,
   int num_threads)
 {
   GST_TRACE("%s", __func__);

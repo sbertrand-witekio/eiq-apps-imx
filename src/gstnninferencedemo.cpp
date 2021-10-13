@@ -44,7 +44,7 @@ extern "C" {
 #define DEMO_MODE_DEFAULT (GstNnInferenceDemo::tflite_posenet)
 #define DISPLAY_STATS_DEFAULT (TRUE)
 #define ENABLE_INFERENCE_DEFAULT (TRUE)
-#define USE_NNAPI_DEFAULT (TRUE)
+#define USE_NNAPI_DEFAULT (2)
 #define NUM_THREADS_DEFAULT (4)
 #define MODEL_DEFAULT ""
 #define LABEL_DEFAULT ""
@@ -275,7 +275,7 @@ set_property (
       demo->enable_inference = g_value_get_boolean (value);
       break;
     case PROP_USE_NNAPI:
-      demo->use_nnapi = g_value_get_boolean (value);
+      demo->use_nnapi = g_value_get_int (value);
       break;
     case PROP_NUM_THREADS:
       demo->num_threads = g_value_get_int (value);
@@ -322,7 +322,7 @@ get_property (
       g_value_set_boolean (value, demo->enable_inference);
       break;
     case PROP_USE_NNAPI:
-      g_value_set_boolean (value, demo->use_nnapi);
+      g_value_set_int (value, demo->use_nnapi);
       break;
     case PROP_NUM_THREADS:
       g_value_set_int (value, demo->num_threads);
@@ -1725,9 +1725,9 @@ class_init (
         (GParamFlags)(G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS)));
 
   g_object_class_install_property (gobject_class, PROP_USE_NNAPI,
-      g_param_spec_boolean("use-nnapi", "Use NNAPI",
+      g_param_spec_int("use-nnapi", "Use NNAPI",
         "Use NNAPI",
-        USE_NNAPI_DEFAULT,
+        0, 2, USE_NNAPI_DEFAULT,
         (GParamFlags)(G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS)));
 
   g_object_class_install_property (gobject_class, PROP_NUM_THREADS,

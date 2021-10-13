@@ -33,6 +33,7 @@
 // tensorflow/lite
 #include <tensorflow/lite/optional_debug_tools.h>
 #include <tensorflow/lite/delegates/nnapi/nnapi_delegate.h>
+#include <tensorflow/lite/delegates/external/external_delegate.h>
 
 // std
 #include <map>
@@ -58,7 +59,7 @@ tflite_inference_t::~tflite_inference_t()
 
 int tflite_inference_t::init(
   const std::string& model,
-  bool use_nnapi,
+  int use_nnapi,
   int num_threads)
 {
   GST_TRACE("%s", __func__);
@@ -136,20 +137,30 @@ int tflite_inference_t::init(
 }
 
 int tflite_inference_t::apply_delegate(
-  bool use_nnapi)
+  int use_nnapi)
 {
   GST_TRACE("%s", __func__);
 
   // assume TFLite v2.0 or newer
   std::map<std::string, tflite::Interpreter::TfLiteDelegatePtr> delegates;
-  if (use_nnapi) {
+  if (use_nnapi == 1) {
     auto delegate = tflite::Interpreter::TfLiteDelegatePtr(tflite::NnApiDelegate(), [](TfLiteDelegate*) {});
     if (!delegate) {
       GST_WARNING("NNAPI acceleration is unsupported on this platform.");
     } else {
       delegates.emplace("NNAPI", std::move(delegate));
     }
+  } else if (use_nnapi == 2) {
+    auto ext_delegate_option = TfLiteExternalDelegateOptionsDefault("/usr/lib/libvx_delegate.so");
+    auto ext_delegate_ptr = TfLiteExternalDelegateCreate(&ext_delegate_option);
+    auto delegate = tflite::Interpreter::TfLiteDelegatePtr(ext_delegate_ptr, [](TfLiteDelegate*) {});
+    if (!delegate) {
+      GST_WARNING("vx-delegate backend is unsupported on this platform.");
+    } else {
+      delegates.emplace("vx-delegate", std::move(delegate));
+    }
   }
+
   for (const auto& delegate : delegates) {
     if (interpreter_->ModifyGraphWithDelegate(delegate.second.get()) != kTfLiteOk) {
       GST_ERROR("Failed to apply %s delegate.", delegate.first.c_str());

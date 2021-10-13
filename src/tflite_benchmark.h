@@ -38,7 +38,7 @@ public:
 
   int init(
     const std::string& model,
-    bool use_nnapi = true,
+    int use_nnapi = 2,
     int num_threads = 4);
 
   int draw_results(cv::Mat& frame);

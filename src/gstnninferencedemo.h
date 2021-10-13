@@ -56,7 +56,7 @@ typedef struct _GstNnInferenceDemo {
   gchar *model;
   gchar *label;
   gboolean display_stats;
-  gboolean use_nnapi;
+  gint use_nnapi;
   gboolean enable_inference;
   gint num_threads;
 

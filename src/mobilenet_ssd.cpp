@@ -45,7 +45,7 @@ mobilenet_ssd_t::~mobilenet_ssd_t()
 
 int mobilenet_ssd_t::init(
   const std::string& model,
-  bool use_nnapi,
+  int use_nnapi,
   int num_threads)
 {
   GST_TRACE("%s", __func__);

@@ -38,7 +38,7 @@ public:
 
   int init(
     const std::string& model,
-    bool use_nnapi,
+    int use_nnapi,
     int num_threads);
 
   virtual int inference(void);
@@ -142,7 +142,7 @@ protected:
 private:
 
   int apply_delegate(
-    bool use_nnapi);
+    int use_nnapi);
 
   std::unique_ptr<tflite::FlatBufferModel> model_;
 
