@@ -11,6 +11,22 @@
 CAMERA=/dev/video0
 if [ $# = 1 ]; then
   CAMERA=$1
+  USE_NNAPI=2
+elif [ $# = 2 ]; then
+  CAMERA=$1
+  if [ "$2" == "--use_nnapi=true" ]; then
+    USE_NNAPI=1
+  elif [ "$2" == "--use_vxdelegate=true" ]; then
+    USE_NNAPI=2
+  else
+    echo "Usage:"
+    echo "# $0 </dev/videox> <--use_vxdelegate=true or --use_nnapi=true>"
+    exit 1
+   fi
+else
+  echo "Usage:"
+  echo "# $0 </dev/videox>"
+  exit 1
 fi
 
 # demo mode
@@ -26,12 +42,11 @@ DISPLAY_STATS=true
 # enable inference (or skip inference)
 ENABLE_INFERENCE=true
 
-# use NNAPI (or use CPUs)
-USE_NNAPI=false
+# use vx-delegate (or use NNAPI or use CPUs)
 if [ -f /proc/device-tree/model ]; then
   cat /proc/device-tree/model | grep -e "i.MX8MPlus" > /dev/null
-  if [ $? = 0 ]; then
-    USE_NNAPI=true
+  if [ $? = 1 ]; then
+    USE_NNAPI=0
   fi
 fi
 

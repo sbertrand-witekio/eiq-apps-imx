@@ -10,6 +10,18 @@
 # video file
 if [ $# = 1 ]; then
   VIDEO_FILE=$1
+  USE_NNAPI=2
+elif [ $# = 2 ]; then
+  VIDEO_FILE=$1
+  if [ "$2" == "--use_nnapi=true" ]; then
+    USE_NNAPI=1
+  elif [ "$2" == "--use_vxdelegate=true" ]; then
+    USE_NNAPI=2
+  else
+    echo "Usage:"
+    echo "# $0 <path/to/video_file> <--use_vxdelegate=true or --use_nnapi=true>"
+    exit 1
+   fi
 else
   echo "Usage:"
   echo "# $0 <path/to/video_file>"
@@ -17,6 +29,7 @@ else
 fi
 
 # demo mode
+
 DEMO_MODE=mobilenet-ssd
 
 # NN model
@@ -29,12 +42,11 @@ DISPLAY_STATS=true
 # enable inference (or skip inference)
 ENABLE_INFERENCE=true
 
-# use NNAPI (or use CPUs)
-USE_NNAPI=false
+# use vx-delegate (or use NNAPI or use CPUs)
 if [ -f /proc/device-tree/model ]; then
   cat /proc/device-tree/model | grep -e "i.MX8MPlus" > /dev/null
-  if [ $? = 0 ]; then
-    USE_NNAPI=true
+  if [ $? = 1 ]; then
+    USE_NNAPI=0
   fi
 fi
 
