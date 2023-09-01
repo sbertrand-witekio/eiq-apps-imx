@@ -159,6 +159,18 @@ int tflite_inference_t::apply_delegate(
     } else {
       delegates.emplace("vx-delegate", std::move(delegate));
     }
+  } else if (use_nnapi == 3) {
+
+	  GST_INFO("Loading /usr/lib/libedgetpu.so.1");
+
+    auto ext_delegate_option = TfLiteExternalDelegateOptionsDefault("/usr/lib/libedgetpu.so.1");
+    auto ext_delegate_ptr = TfLiteExternalDelegateCreate(&ext_delegate_option);
+    auto delegate = tflite::Interpreter::TfLiteDelegatePtr(ext_delegate_ptr, [](TfLiteDelegate*) {});
+    if (!delegate) {
+      GST_WARNING("edgetpu-delegate backend is unsupported on this platform.");
+    } else {
+      delegates.emplace("edgetpu-delegate", std::move(delegate));
+    }
   }
 
   for (const auto& delegate : delegates) {

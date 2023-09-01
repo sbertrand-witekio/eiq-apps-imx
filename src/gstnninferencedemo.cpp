@@ -1727,7 +1727,7 @@ class_init (
   g_object_class_install_property (gobject_class, PROP_USE_NNAPI,
       g_param_spec_int("use-nnapi", "Use NNAPI",
         "Use NNAPI",
-        0, 2, USE_NNAPI_DEFAULT,
+        0, 3, USE_NNAPI_DEFAULT,
         (GParamFlags)(G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS)));
 
   g_object_class_install_property (gobject_class, PROP_NUM_THREADS,
