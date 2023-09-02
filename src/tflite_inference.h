@@ -45,7 +45,7 @@ public:
   virtual int get_input_tensor_shape(std::vector<int>* shape);
   virtual int get_input_tensor(uint8_t **ptr, size_t* sz);
 
-  bool verbose_ = false;
+  bool verbose_ = true;
 
 protected:
 

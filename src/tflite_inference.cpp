@@ -163,7 +163,7 @@ int tflite_inference_t::apply_delegate(
 
 	  GST_INFO("Loading /usr/lib/libedgetpu.so.1");
 
-    auto ext_delegate_option = TfLiteExternalDelegateOptionsDefault("/usr/lib/libedgetpu.so.1");
+    auto ext_delegate_option = TfLiteExternalDelegateOptionsDefault("/usr/lib/libedgetpu.so");
     auto ext_delegate_ptr = TfLiteExternalDelegateCreate(&ext_delegate_option);
     auto delegate = tflite::Interpreter::TfLiteDelegatePtr(ext_delegate_ptr, [](TfLiteDelegate*) {});
     if (!delegate) {
