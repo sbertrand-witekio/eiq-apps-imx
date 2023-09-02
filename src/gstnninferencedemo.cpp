@@ -1865,9 +1865,9 @@ GST_PLUGIN_DEFINE(
   GST_VERSION_MAJOR,
   GST_VERSION_MINOR,
   nninferencedemo,
-  "i.MX NN Inference demo plugin",
+  "wtk i.MX NN Inference demo plugin",
   plugin_init,
   VERSION,
   IMX_GST_PLUGIN_LICENSE,
-  "i.MX NN Inference demo plugin",
+  "wtk i.MX NN Inference demo plugin",
   "nxp.com");
